@@ -14,9 +14,9 @@ export default function HeroOverlay() {
     offset: ["start start", "end start"],
   });
 
-  // Fade content in between 25% and 35% of the scroll (when face is close), and fade out near the end
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.25, 0.35, 0.8, 0.9], [0, 0, 1, 1, 0]);
-  const contentY = useTransform(scrollYProgress, [0.25, 0.35, 0.8, 0.9], ["30px", "0px", "0px", "-30px"]);
+  // Content is fully visible from the start, and fades out near the end as we scroll down
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.8, 0.9], [1, 1, 0]);
+  const contentY = useTransform(scrollYProgress, [0, 0.8, 0.9], ["0px", "0px", "-30px"]);
   
   // Scroll indicator is visible at the very start, then fades out as you start scrolling
   const scrollIndicatorOpacity = useTransform(scrollYProgress, [0, 0.05], [1, 0]);
@@ -72,11 +72,11 @@ export default function HeroOverlay() {
                   href={social.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-14 h-14 rounded-full glass flex items-center justify-center text-white hover:bg-white hover:text-black transition-colors group relative hover:scale-110 duration-300"
+                  className="w-12 h-12 md:w-14 md:h-14 rounded-full border border-white/20 bg-white/10 flex items-center justify-center text-white hover:bg-[#ff4500] hover:border-[#ff4500] hover:scale-115 shadow-[0_4px_12px_rgba(0,0,0,0.4)] hover:shadow-[0_0_20px_rgba(255,69,0,0.55)] transition-all duration-300 group relative"
                 >
-                  <Icon size={24} />
+                  <Icon className="w-5 h-5 md:w-6 h-6" />
                   {/* Tooltip */}
-                  <span className="absolute right-full mr-4 px-3 py-1 bg-white text-black text-sm font-semibold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap hidden md:block">
+                  <span className="absolute right-full mr-4 px-3 py-1.5 bg-neutral-950/95 border border-white/15 backdrop-blur-md text-white text-[10px] md:text-[11px] font-black tracking-widest uppercase rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-250 pointer-events-none whitespace-nowrap hidden md:block">
                     {social.label}
                   </span>
                 </a>

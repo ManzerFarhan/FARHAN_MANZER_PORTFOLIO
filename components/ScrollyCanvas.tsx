@@ -21,11 +21,16 @@ export default function ScrollyCanvas() {
     offset: ["start start", "end end"],
   });
 
-  const rawFrameIndex = useTransform(scrollYProgress, [0, 1], [0, FRAME_COUNT - 1]);
+  // Accelerate frames to 115 within the first 25% of the scroll height, and slow down afterwards
+  const rawFrameIndex = useTransform(
+    scrollYProgress, 
+    [0, 0.25, 0.8, 1], 
+    [0, 115, 125, FRAME_COUNT - 1]
+  );
   const frameIndex = useSpring(rawFrameIndex, {
-    stiffness: 300,
-    damping: 50,
-    mass: 1
+    stiffness: 280,
+    damping: 45,
+    mass: 0.8
   });
 
   const [hasAutoPlayed, setHasAutoPlayed] = useState(false);
@@ -36,7 +41,7 @@ export default function ScrollyCanvas() {
     const handleScroll = () => {
       if (window.scrollY > 10 && !hasAutoPlayed) {
         setHasAutoPlayed(true);
-        const targetScroll = window.innerHeight * 3.5 * 0.33;
+        const targetScroll = window.innerHeight * 3.5 * 0.25;
         
         if (window.scrollY < targetScroll - 50) {
           import("framer-motion").then(({ animate }) => {
