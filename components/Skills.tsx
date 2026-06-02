@@ -49,8 +49,7 @@ const technicalLine2: Skill[] = [
   { name: "GitHub", icon: FaGithub },
   { name: "Vercel", icon: VercelIcon },
   { name: "Jupyter Notebook", icon: FaCode },
-  { name: "Power BI", icon: BarChart3 },
-  { name: "Healthcare AI", icon: HeartPulse }
+  { name: "Power BI", icon: BarChart3 }
 ];
 
 // Creative: Photography • Videography • Video Editing • Graphic Design • Leadership • Team Management • Project Management
