@@ -12,7 +12,7 @@ export default function Hero() {
   useEffect(() => {
     // Preload the single hero image
     const img = new Image();
-    img.src = "/hero.jpeg";
+    img.src = "/hero1.jpg";
     img.onload = () => {
       // Simulate slightly longer loading for a premium feel
       setTimeout(() => {
@@ -59,7 +59,7 @@ export default function Hero() {
         animate={{ opacity: isLoaded ? 1 : 0, scale: isLoaded ? 1 : 1.05 }}
         transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
         className="absolute inset-0 w-full h-full bg-cover bg-center pointer-events-none"
-        style={{ backgroundImage: `url('/hero.jpeg')` }}
+        style={{ backgroundImage: `url('/hero1.jpg')` }}
       />
 
       {/* Dark Vignette Overlay for Premium Vignette & Contrast */}
