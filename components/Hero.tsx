@@ -58,7 +58,7 @@ export default function Hero() {
         initial={{ opacity: 0, scale: 1.05 }}
         animate={{ opacity: isLoaded ? 1 : 0, scale: isLoaded ? 1 : 1.05 }}
         transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute inset-0 w-full h-full bg-cover bg-[65%_center] md:bg-center pointer-events-none"
+        className="absolute inset-0 w-full h-full bg-cover bg-[60%_center] md:bg-center pointer-events-none"
         style={{ backgroundImage: `url('/hero1.jpg')` }}
       />
 

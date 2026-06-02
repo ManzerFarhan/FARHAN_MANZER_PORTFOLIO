@@ -19,7 +19,7 @@ export const content = {
     ],
   },
   skills: [
-    "Python", "SQL", "HTML", "Google", "AWS", "Kaggle", "Vercel", 
+     "Python", "SQL", "HTML", "Google", "Kaggle", "Vercel", 
     "Jupyter Notebook", "GitHub", "Power BI", "Excel", "PowerPoint", 
     "Editing", "VN", "CapCut", "Snapseed", "Photography", "Videography", 
     "Leadership", "Teamwork", "Team Management"

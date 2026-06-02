@@ -43,7 +43,6 @@ const technicalLine1: Skill[] = [
 const technicalLine2: Skill[] = [
   { name: "Feature Engineering", icon: Sliders },
   { name: "Data Visualization", icon: BarChart3 },
-  { name: "AWS", icon: FaAws },
   { name: "Google Cloud", icon: FaGoogle },
   { name: "Git", icon: FaGitAlt },
   { name: "GitHub", icon: FaGithub },
