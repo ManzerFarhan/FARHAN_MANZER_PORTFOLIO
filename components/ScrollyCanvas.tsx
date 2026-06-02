@@ -36,13 +36,13 @@ export default function ScrollyCanvas() {
     const handleScroll = () => {
       if (window.scrollY > 10 && !hasAutoPlayed) {
         setHasAutoPlayed(true);
-        const targetScroll = window.innerHeight * 8 * 0.35;
+        const targetScroll = window.innerHeight * 3.5 * 0.33;
         
-        if (window.scrollY < targetScroll - 100) {
+        if (window.scrollY < targetScroll - 50) {
           import("framer-motion").then(({ animate }) => {
             animate(window.scrollY, targetScroll, {
-              duration: 2.5,
-              ease: "easeInOut",
+              duration: 1.6,
+              ease: [0.16, 1, 0.3, 1], // easeOutExpo: buttery smooth deceleration
               onUpdate: (latest) => window.scrollTo(0, latest)
             });
           });
@@ -139,7 +139,7 @@ export default function ScrollyCanvas() {
   }, [imagesLoaded, frameIndex]);
 
   return (
-    <div ref={containerRef} className="relative w-full h-[800vh]">
+    <div ref={containerRef} className="relative w-full h-[350vh]">
       <div className="sticky top-0 w-full h-screen overflow-hidden">
         {/* Loading overlay */}
         <motion.div 
