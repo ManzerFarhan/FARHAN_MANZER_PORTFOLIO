@@ -14,9 +14,9 @@ export default function HeroOverlay() {
     offset: ["start start", "end start"],
   });
 
-  // Content is fully visible from the start, and fades out near the end as we scroll down
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.8, 0.9], [1, 1, 0]);
-  const contentY = useTransform(scrollYProgress, [0, 0.8, 0.9], ["0px", "0px", "-30px"]);
+  // Content is hidden at scroll 0, fades in between 0.20 and 0.28 (around frame 90 to 110), and fades out near the end
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.20, 0.28, 0.8, 0.9], [0, 0, 1, 1, 0]);
+  const contentY = useTransform(scrollYProgress, [0.20, 0.28, 0.8, 0.9], ["40px", "0px", "0px", "-40px"]);
   
   // Scroll indicator is visible at the very start, then fades out as you start scrolling
   const scrollIndicatorOpacity = useTransform(scrollYProgress, [0, 0.05], [1, 0]);
