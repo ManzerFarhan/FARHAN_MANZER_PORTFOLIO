@@ -1,25 +1,29 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { content } from "@/config/content";
 import { FileText } from "lucide-react";
 import { FaLinkedin, FaGithub, FaInstagram, FaEnvelope } from "react-icons/fa";
 
-export default function HeroOverlay() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"],
-  });
+export default function Hero() {
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  // Content is hidden at scroll 0, fades in between 0.10 and 0.17 (fully visible by frame 83), and fades out near the end
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.10, 0.17, 0.85, 0.95], [0, 0, 1, 1, 0]);
-  const contentY = useTransform(scrollYProgress, [0.10, 0.17, 0.85, 0.95], ["40px", "0px", "0px", "-40px"]);
-  
-  // Scroll indicator is visible at the very start, then fades out as you start scrolling
-  const scrollIndicatorOpacity = useTransform(scrollYProgress, [0, 0.05], [1, 0]);
+  useEffect(() => {
+    // Preload the single hero image
+    const img = new Image();
+    img.src = "/hero.jpeg";
+    img.onload = () => {
+      // Simulate slightly longer loading for a premium feel
+      setTimeout(() => {
+        setIsLoaded(true);
+      }, 1000);
+    };
+    img.onerror = () => {
+      // Fallback in case image is missing
+      setIsLoaded(true);
+    };
+  }, []);
 
   const socialLinks = [
     { icon: FaLinkedin, href: content.socials.linkedin, label: "LinkedIn" },
@@ -29,10 +33,45 @@ export default function HeroOverlay() {
   ];
 
   return (
-    <div ref={containerRef} className="absolute inset-0 z-10 pointer-events-none">
-      <div className="sticky top-0 w-full h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24">
-        <motion.div 
-          style={{ opacity: contentOpacity, y: contentY }}
+    <div className="relative w-full h-screen bg-[#050505] overflow-hidden">
+      {/* Loading Overlay */}
+      <AnimatePresence>
+        {!isLoaded && (
+          <motion.div
+            key="loader"
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className="absolute inset-0 z-50 flex items-center justify-center bg-[#050505]"
+          >
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-12 h-12 border-t-2 border-orange-500 rounded-full animate-spin" />
+              <div className="text-white/50 text-sm font-mono tracking-widest uppercase animate-pulse">
+                LOADING EXPERIENCE
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Background Image with Fade-in and beautiful filters */}
+      <motion.div
+        initial={{ opacity: 0, scale: 1.05 }}
+        animate={{ opacity: isLoaded ? 1 : 0, scale: isLoaded ? 1 : 1.05 }}
+        transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+        className="absolute inset-0 w-full h-full bg-cover bg-center pointer-events-none"
+        style={{ backgroundImage: `url('/hero.jpeg')` }}
+      />
+
+      {/* Dark Vignette Overlay for Premium Vignette & Contrast */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/20 to-[#050505]/40 pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,#050505_95%)] pointer-events-none" />
+
+      {/* Foreground Content */}
+      <div className="relative w-full h-full flex flex-col justify-center px-6 md:px-16 lg:px-24 z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 30 }}
+          transition={{ duration: 1.0, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col md:flex-row justify-between items-center w-full gap-12"
         >
           {/* Left Side: Name and Resume */}
@@ -44,17 +83,17 @@ export default function HeroOverlay() {
                 </span>
               ))}
             </h1>
-            
+
             <p className="text-lg md:text-2xl text-white/80 font-light tracking-wide mb-10 drop-shadow-lg max-w-xl">
               {content.hero.tagline}
             </p>
-            
+
             <div className="pointer-events-auto flex gap-4">
-              <a 
-                href={content.socials.resume} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="px-8 py-4 bg-white text-black font-semibold rounded-full hover:scale-105 transition-transform flex items-center gap-2"
+              <a
+                href={content.socials.resume}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-8 py-4 bg-white text-black font-semibold rounded-full hover:scale-105 transition-transform flex items-center gap-2 shadow-[0_4px_12px_rgba(0,0,0,0.3)]"
               >
                 <FileText size={20} />
                 Resume
@@ -86,13 +125,15 @@ export default function HeroOverlay() {
         </motion.div>
 
         {/* Scroll Indicator */}
-        <motion.div 
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center"
-          style={{ opacity: scrollIndicatorOpacity }}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isLoaded ? 1 : 0 }}
+          transition={{ duration: 1.0, delay: 1.2 }}
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none"
         >
           <span className="text-xs tracking-[0.2em] text-white/50 mb-2 uppercase drop-shadow-md">Scroll</span>
           <div className="w-[1px] h-12 bg-white/20 relative overflow-hidden">
-            <motion.div 
+            <motion.div
               className="absolute top-0 w-full h-1/2 bg-white"
               animate={{ y: ["-100%", "200%"] }}
               transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
